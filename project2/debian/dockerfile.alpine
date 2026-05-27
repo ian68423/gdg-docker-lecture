@@ -1,0 +1,27 @@
+# =====================================
+# Alpine + apk 版本
+# =====================================
+# 重點：
+#   1. Alpine 套件命名把版本綁在名字裡 (php83 vs php82)
+#   2. apk add --no-cache 是省空間的關鍵字
+#   3. 一個 RUN 包好所有套件，避免 layer cache 陷阱
+# =====================================
+FROM alpine:3.20
+
+# --no-cache：裝完不留 apk 下載 index 在 /var/cache/apk/
+# 一行裝多個套件，比一行一個快
+RUN apk add --no-cache \
+    php83 \
+    php83-cli \
+    php83-curl \
+    php83-mbstring \
+    php83-openssl
+
+# Alpine 把 PHP 8.3 裝成 /usr/bin/php83
+# symlink 成 /usr/bin/php 方便執行（-f 避免套件已建好同名 symlink 時撞檔）
+RUN ln -sf /usr/bin/php83 /usr/bin/php
+
+WORKDIR /app
+COPY script.php .
+
+CMD ["php", "script.php"]
