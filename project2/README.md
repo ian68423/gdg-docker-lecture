@@ -29,8 +29,8 @@ project2/
 cd project2
 
 # Build 兩個 image
-docker build -f Dockerfile.alpine -t demo-alpine .
-docker build -f Dockerfile.debian -t demo-debian .
+docker build -f alpine/Dockerfile.alpine -t demo-alpine .
+docker build -f debian/Dockerfile.debian -t demo-debian .
 
 # 跑跑看（兩邊輸出應該一模一樣）
 docker run --rm demo-alpine
